@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Maximum Offer Calculator</title>
+  <title>Property Deal Calculator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
@@ -14,13 +14,13 @@
       --charcoal-mid: #2C2C2E;
       --charcoal-light: #3A3A3C;
       --cream: #F5F0E8;
-      --cream-dim: #E8E2D8;
+      --slate: #8E8E93;
       --gold: #C9A84C;
       --gold-dim: #a88a3a;
-      --slate: #8E8E93;
       --green: #34C759;
       --amber: #FF9F0A;
       --red: #FF453A;
+      --blue: #0A84FF;
       --white: #FFFFFF;
     }
 
@@ -35,94 +35,114 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 1rem 4rem;
+      padding: 0 1rem 5rem;
     }
 
-    /* ── Header ── */
     header {
       width: 100%;
-      max-width: 580px;
+      max-width: 600px;
       padding: 2.5rem 0 0;
       text-align: center;
     }
 
     .eyebrow {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
     }
 
     h1 {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: clamp(2rem, 7vw, 3rem);
       font-weight: 700;
-      letter-spacing: -0.01em;
       line-height: 1.05;
       color: var(--white);
     }
 
     .subtitle {
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
+      margin-top: 0.45rem;
+      font-size: 0.83rem;
       color: var(--slate);
     }
 
-    /* ── Formula strip ── */
-    .formula-strip {
+    /* Tabs */
+    .tabs {
+      display: flex;
+      width: 100%;
+      max-width: 600px;
       margin-top: 1.8rem;
       background: var(--charcoal-mid);
       border: 1px solid var(--charcoal-light);
-      border-radius: 8px;
-      padding: 0.75rem 1.2rem;
-      font-size: 0.75rem;
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      border-radius: 7px;
       color: var(--slate);
-      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.55rem 0.5rem;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab-btn.active {
+      background: var(--charcoal-light);
+      color: var(--gold);
+    }
+
+    .section { display: none; width: 100%; max-width: 600px; }
+    .section.active { display: block; }
+
+    .formula-strip {
+      margin-top: 1.4rem;
+      background: var(--charcoal-mid);
+      border: 1px solid var(--charcoal-light);
+      border-radius: 8px;
+      padding: 0.75rem 1.1rem;
+      font-size: 0.74rem;
+      color: var(--slate);
+      line-height: 1.8;
       text-align: center;
     }
+    .formula-strip strong { color: var(--gold); font-weight: 600; }
 
-    .formula-strip strong {
-      color: var(--gold);
-      font-weight: 600;
-    }
-
-    /* ── Card ── */
     .card {
       width: 100%;
-      max-width: 580px;
       background: var(--charcoal-mid);
       border: 1px solid var(--charcoal-light);
       border-radius: 14px;
-      padding: 2rem;
-      margin-top: 1.4rem;
+      padding: 1.8rem;
+      margin-top: 1.2rem;
     }
 
-    /* ── Fields ── */
-    .field {
-      margin-bottom: 1.4rem;
-    }
+    .field { margin-bottom: 1.3rem; }
+    .field:last-child { margin-bottom: 0; }
 
     label {
       display: block;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--slate);
-      margin-bottom: 0.45rem;
+      margin-bottom: 0.4rem;
     }
 
-    .input-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
+    .input-wrap { position: relative; display: flex; align-items: center; }
 
     .input-wrap .symbol {
       position: absolute;
-      left: 0.9rem;
+      left: 0.85rem;
       font-size: 1rem;
       color: var(--gold);
       pointer-events: none;
@@ -138,77 +158,75 @@
       font-family: 'Inter', sans-serif;
       font-size: 1.05rem;
       font-weight: 500;
-      padding: 0.75rem 0.9rem 0.75rem 2.2rem;
+      padding: 0.72rem 0.9rem 0.72rem 2.2rem;
       outline: none;
       transition: border-color 0.15s;
       -moz-appearance: textfield;
     }
-
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-
     input[type="number"]::placeholder { color: #48484A; }
+    input[type="number"]:focus { border-color: var(--gold); }
 
-    input[type="number"]:focus {
-      border-color: var(--gold);
-    }
+    .field-hint { font-size: 0.67rem; color: #636366; margin-top: 0.28rem; }
 
-    .field-hint {
-      font-size: 0.68rem;
-      color: #636366;
-      margin-top: 0.3rem;
-    }
-
-    /* ── Divider ── */
-    .divider {
-      height: 1px;
-      background: var(--charcoal-light);
-      margin: 1.6rem 0;
-    }
-
-    /* ── Profit margin slider ── */
-    .slider-label-row {
+    /* Toggle row for mortgage input mode */
+    .toggle-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.45rem;
+      gap: 0.6rem;
+      margin-bottom: 1.1rem;
     }
-
-    .slider-label-row label { margin-bottom: 0; }
-
-    .slider-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem;
+    .toggle-row span {
+      font-size: 0.7rem;
       font-weight: 600;
-      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--slate);
     }
+    .toggle-row span.active-mode { color: var(--gold); }
 
-    input[type="range"] {
-      width: 100%;
-      -webkit-appearance: none;
-      background: transparent;
-      cursor: pointer;
+    .toggle-switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
     }
-
-    input[type="range"]::-webkit-slider-runnable-track {
-      height: 4px;
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute;
+      inset: 0;
       background: var(--charcoal-light);
-      border-radius: 2px;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.2s;
     }
-
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      left: 3px; top: 3px;
+      width: 16px; height: 16px;
+      background: var(--slate);
       border-radius: 50%;
-      background: var(--gold);
-      margin-top: -7px;
-      box-shadow: 0 0 0 3px rgba(201,168,76,0.2);
+      transition: transform 0.2s, background 0.2s;
     }
+    .toggle-switch input:checked + .toggle-track { background: rgba(201,168,76,0.25); }
+    .toggle-switch input:checked + .toggle-track::after { transform: translateX(18px); background: var(--gold); }
 
+    .divider { height: 1px; background: var(--charcoal-light); margin: 1.4rem 0; }
+
+    .slider-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+    .slider-label-row label { margin-bottom: 0; }
+    .slider-value { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--gold); }
+
+    input[type="range"] { width: 100%; -webkit-appearance: none; background: transparent; cursor: pointer; }
+    input[type="range"]::-webkit-slider-runnable-track { height: 4px; background: var(--charcoal-light); border-radius: 2px; }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--gold); margin-top: -7px; box-shadow: 0 0 0 3px rgba(201,168,76,0.2);
+    }
     input[type="range"]:focus { outline: none; }
 
-    /* ── Calculate button ── */
     .calc-btn {
       width: 100%;
       background: var(--gold);
@@ -220,118 +238,126 @@
       text-transform: uppercase;
       border: none;
       border-radius: 8px;
-      padding: 0.9rem;
+      padding: 0.88rem;
       cursor: pointer;
       margin-top: 0.4rem;
       transition: background 0.15s, transform 0.1s;
     }
-
     .calc-btn:hover { background: var(--gold-dim); }
     .calc-btn:active { transform: scale(0.98); }
 
-    /* ── Result panel ── */
-    .result-panel {
-      width: 100%;
-      max-width: 580px;
-      margin-top: 1.2rem;
-      border-radius: 14px;
-      padding: 1.8rem 2rem;
-      border: 2px solid transparent;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s;
-      pointer-events: none;
-    }
-
-    .result-panel.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .result-panel.green  { background: rgba(52,199,89,0.08);  border-color: rgba(52,199,89,0.3);  }
-    .result-panel.amber  { background: rgba(255,159,10,0.08); border-color: rgba(255,159,10,0.3); }
-    .result-panel.red    { background: rgba(255,69,58,0.08);  border-color: rgba(255,69,58,0.3);  }
-
-    .result-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--slate);
-      margin-bottom: 0.2rem;
-    }
-
-    .result-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(2.6rem, 10vw, 4.2rem);
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -0.01em;
-    }
-
-    .result-panel.green .result-value { color: var(--green); }
-    .result-panel.amber .result-value { color: var(--amber); }
-    .result-panel.red   .result-value { color: var(--red);   }
-
-    .result-verdict {
-      margin-top: 0.5rem;
-      font-size: 0.82rem;
-      color: var(--slate);
-    }
-
-    .result-verdict strong {
-      color: var(--cream);
-    }
-
-    /* ── Breakdown ── */
-    .breakdown {
-      margin-top: 1.4rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .breakdown-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.82rem;
-    }
-
-    .breakdown-row .bk-label { color: var(--slate); }
-    .breakdown-row .bk-val   { color: var(--cream); font-weight: 500; }
-    .breakdown-row.total .bk-label { color: var(--cream); font-weight: 600; }
-    .breakdown-row.total .bk-val   { color: var(--gold);  font-weight: 700; font-size: 0.9rem; }
-
-    /* ── Reset ── */
     .reset-btn {
-      display: block;
-      margin: 1rem auto 0;
-      background: none;
-      border: none;
-      color: var(--slate);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      display: block; margin: 0.9rem auto 0;
+      background: none; border: none;
+      color: var(--slate); font-family: 'Inter', sans-serif;
+      font-size: 0.76rem; cursor: pointer;
+      text-decoration: underline; text-underline-offset: 2px;
       transition: color 0.15s;
     }
     .reset-btn:hover { color: var(--cream); }
 
-    /* ── Footer ── */
+    /* Result panels */
+    .result-panel {
+      width: 100%;
+      margin-top: 1.1rem;
+      border-radius: 14px;
+      padding: 1.6rem 1.8rem;
+      border: 2px solid transparent;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+    .result-panel.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .result-panel.green { background: rgba(52,199,89,0.08);  border-color: rgba(52,199,89,0.3); }
+    .result-panel.amber { background: rgba(255,159,10,0.08); border-color: rgba(255,159,10,0.3); }
+    .result-panel.red   { background: rgba(255,69,58,0.08);  border-color: rgba(255,69,58,0.3); }
+
+    .result-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--slate); margin-bottom: 0.15rem;
+    }
+    .result-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.2rem, 8vw, 3.6rem);
+      font-weight: 700; line-height: 1.1; letter-spacing: -0.01em;
+    }
+    .result-panel.green .result-value { color: var(--green); }
+    .result-panel.amber .result-value { color: var(--amber); }
+    .result-panel.red   .result-value { color: var(--red); }
+
+    .result-verdict { margin-top: 0.45rem; font-size: 0.81rem; color: var(--slate); }
+    .result-verdict strong { color: var(--cream); }
+
+    .breakdown {
+      margin-top: 1.3rem; padding-top: 1.1rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; gap: 0.48rem;
+    }
+    .breakdown-row { display: flex; justify-content: space-between; font-size: 0.81rem; }
+    .breakdown-row .bk-label { color: var(--slate); }
+    .breakdown-row .bk-val   { color: var(--cream); font-weight: 500; }
+    .breakdown-row.highlight .bk-label { color: var(--cream); font-weight: 500; }
+    .breakdown-row.highlight .bk-val   { color: var(--cream); font-weight: 600; }
+    .breakdown-row.total .bk-label { color: var(--cream); font-weight: 600; }
+    .breakdown-row.total .bk-val   { color: var(--gold); font-weight: 700; font-size: 0.9rem; }
+
+    /* Verdict badge */
+    .verdict-badge {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.2rem; font-weight: 700; letter-spacing: 0.04em;
+      padding: 0.1rem 0.6rem;
+      border-radius: 6px;
+      margin-bottom: 0.1rem;
+    }
+    .badge-pass { background: rgba(52,199,89,0.15);  color: var(--green); }
+    .badge-fail { background: rgba(255,69,58,0.15);  color: var(--red); }
+
+    .strategy-box {
+      margin-top: 1.1rem;
+      padding: 1rem 1.1rem;
+      border-radius: 9px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+    .strategy-box .s-label {
+      font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--slate); margin-bottom: 0.5rem;
+    }
+    .strategy-label-big {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem; font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .strategy-label-big.brr  { color: var(--green); }
+    .strategy-label-big.flip { color: var(--amber); }
+    .strategy-reason {
+      font-size: 0.82rem; color: var(--slate); line-height: 1.6;
+    }
+    .strategy-reason strong { color: var(--cream); }
+
+    /* Auto-calc badge */
+    .auto-badge {
+      display: inline-block;
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: rgba(201,168,76,0.15);
+      color: var(--gold);
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+
     footer {
-      margin-top: 3rem;
-      font-size: 0.68rem;
-      color: #48484A;
-      text-align: center;
+      margin-top: 3rem; font-size: 0.67rem;
+      color: #48484A; text-align: center;
     }
 
     @media (max-width: 420px) {
-      .card { padding: 1.4rem 1rem; }
-      .result-panel { padding: 1.4rem 1rem; }
+      .card { padding: 1.3rem 1rem; }
+      .result-panel { padding: 1.3rem 1rem; }
     }
   </style>
 </head>
@@ -339,153 +365,374 @@
 
 <header>
   <p class="eyebrow">Property Investment</p>
-  <h1>Maximum Offer<br>Calculator</h1>
-  <p class="subtitle">Know your ceiling before you walk through the door.</p>
-
-  <div class="formula-strip">
-    <strong>Maximum Offer</strong> = End Value − (End Value × Profit Margin %) − Refurbishment / GDC
-  </div>
+  <h1>Deal Calculator</h1>
+  <p class="subtitle">Maximum offer · Stress test · Exit strategy</p>
 </header>
 
-<!-- Input card -->
-<div class="card">
-
-  <div class="field">
-    <label for="endValue">End Value (GDV)</label>
-    <div class="input-wrap">
-      <span class="symbol">£</span>
-      <input type="number" id="endValue" placeholder="e.g. 350000" min="0" step="1000" />
-    </div>
-    <p class="field-hint">Estimated resale or refinance value after works</p>
-  </div>
-
-  <div class="field">
-    <label for="refurb">Refurbishment / GDC</label>
-    <div class="input-wrap">
-      <span class="symbol">£</span>
-      <input type="number" id="refurb" placeholder="e.g. 40000" min="0" step="500" />
-    </div>
-    <p class="field-hint">Total cost of works, including contingency</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="field">
-    <div class="slider-label-row">
-      <label for="margin">Profit Margin</label>
-      <span class="slider-value" id="marginDisplay">25%</span>
-    </div>
-    <input type="range" id="margin" min="10" max="40" value="25" step="1" />
-    <p class="field-hint">Default 25% — adjust for your deal criteria</p>
-  </div>
-
-  <button class="calc-btn" onclick="calculate()">Calculate Maximum Offer</button>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('offer', this)">Maximum Offer</button>
+  <button class="tab-btn" onclick="switchTab('stress', this)">Stress Test</button>
 </div>
 
-<!-- Result panel -->
-<div class="result-panel" id="resultPanel">
-  <p class="result-label">Maximum Offer</p>
-  <div class="result-value" id="resultValue">£0</div>
-  <p class="result-verdict" id="resultVerdict"></p>
-
-  <div class="breakdown" id="breakdown">
-    <div class="breakdown-row">
-      <span class="bk-label">End Value (GDV)</span>
-      <span class="bk-val" id="bkEndValue">—</span>
-    </div>
-    <div class="breakdown-row">
-      <span class="bk-label">Less profit margin (<span id="bkPct">25</span>%)</span>
-      <span class="bk-val" id="bkProfit">—</span>
-    </div>
-    <div class="breakdown-row">
-      <span class="bk-label">Less refurbishment / GDC</span>
-      <span class="bk-val" id="bkRefurb">—</span>
-    </div>
-    <div class="breakdown-row total">
-      <span class="bk-label">= Maximum Offer</span>
-      <span class="bk-val" id="bkResult">—</span>
-    </div>
+<!-- ══════════════════════════════════════════════
+     TAB 1 — MAXIMUM OFFER
+══════════════════════════════════════════════ -->
+<div class="section active" id="tab-offer">
+  <div class="formula-strip">
+    <strong>Maximum Offer</strong> = End Value − (End Value × Profit %) − Refurbishment / GDC
   </div>
 
-  <button class="reset-btn" onclick="resetForm()">Clear and start again</button>
+  <div class="card">
+    <div class="field">
+      <label for="endValue">End Value (GDV)</label>
+      <div class="input-wrap">
+        <span class="symbol">£</span>
+        <input type="number" id="endValue" placeholder="e.g. 350,000" min="0" step="1000" />
+      </div>
+      <p class="field-hint">Estimated resale or refinance value after works</p>
+    </div>
+
+    <div class="field">
+      <label for="refurb">Refurbishment / GDC</label>
+      <div class="input-wrap">
+        <span class="symbol">£</span>
+        <input type="number" id="refurb" placeholder="e.g. 40,000" min="0" step="500" />
+      </div>
+      <p class="field-hint">Total cost of works, including contingency</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <div class="slider-label-row">
+        <label for="margin">Profit Margin</label>
+        <span class="slider-value" id="marginDisplay">25%</span>
+      </div>
+      <input type="range" id="margin" min="10" max="40" value="25" step="1" />
+      <p class="field-hint">Default 25% — adjust for your deal criteria</p>
+    </div>
+
+    <button class="calc-btn" onclick="calcOffer()">Calculate Maximum Offer</button>
+  </div>
+
+  <div class="result-panel" id="offerPanel">
+    <p class="result-label">Maximum Offer</p>
+    <div class="result-value" id="offerValue"></div>
+    <p class="result-verdict" id="offerVerdict"></p>
+    <div class="breakdown">
+      <div class="breakdown-row">
+        <span class="bk-label">End Value (GDV)</span>
+        <span class="bk-val" id="o-endVal">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="bk-label">Less profit margin (<span id="o-pct">25</span>%)</span>
+        <span class="bk-val" id="o-profit">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="bk-label">Less refurbishment / GDC</span>
+        <span class="bk-val" id="o-refurb">—</span>
+      </div>
+      <div class="breakdown-row total">
+        <span class="bk-label">= Maximum Offer</span>
+        <span class="bk-val" id="o-result">—</span>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetOffer()">Clear and start again</button>
+  </div>
 </div>
 
-<footer>For indicative purposes only. Always conduct full due diligence.</footer>
+<!-- ══════════════════════════════════════════════
+     TAB 2 — STRESS TEST
+══════════════════════════════════════════════ -->
+<div class="section" id="tab-stress">
+  <div class="formula-strip">
+    <strong>Refinance Mortgage</strong> = End Value (GDV) × 75% LTV<br>
+    <strong>Monthly Stressed Interest</strong> = Mortgage × Stressed Rate% ÷ 12<br>
+    <strong>Required Rent</strong> = Monthly Interest × 1.5 &nbsp;·&nbsp; Pass if Actual Rent ≥ Required Rent
+  </div>
+
+  <div class="card">
+
+    <div class="field">
+      <label for="s-gdv">End Value (GDV)</label>
+      <div class="input-wrap">
+        <span class="symbol">£</span>
+        <input type="number" id="s-gdv" placeholder="e.g. 220,000" min="0" step="1000"
+               oninput="autoCalcMortgage()" />
+      </div>
+      <p class="field-hint">After refurbishment resale or refinance value</p>
+    </div>
+
+    <div class="field">
+      <label for="s-mortgage">
+        Refinance Mortgage (75% LTV)
+        <span class="auto-badge" id="autoLabel">auto</span>
+      </label>
+      <div class="input-wrap">
+        <span class="symbol">£</span>
+        <input type="number" id="s-mortgage" placeholder="Auto-calculated or enter manually" min="0" step="1000"
+               oninput="onMortgageManual()" />
+      </div>
+      <p class="field-hint">Pre-filled at 75% of GDV — override if your lender uses a different figure</p>
+    </div>
+
+    <div class="field">
+      <label for="s-rate">Stressed Interest Rate</label>
+      <div class="input-wrap">
+        <span class="symbol">%</span>
+        <input type="number" id="s-rate" placeholder="e.g. 6" min="0" max="25" step="0.1" />
+      </div>
+      <p class="field-hint">Lender's stress-test rate — not your actual pay rate</p>
+    </div>
+
+    <div class="field">
+      <label for="s-rent">Expected Rent (per month)</label>
+      <div class="input-wrap">
+        <span class="symbol">£</span>
+        <input type="number" id="s-rent" placeholder="e.g. 1,200" min="0" step="50" />
+      </div>
+      <p class="field-hint">Realistic achievable monthly rental income</p>
+    </div>
+
+    <button class="calc-btn" onclick="calcStress()">Run Stress Test</button>
+  </div>
+
+  <div class="result-panel" id="stressPanel">
+    <p class="result-label">Stress Test Result</p>
+    <div class="result-value" id="stressVerdict"></div>
+    <p class="result-verdict" id="stressDetail"></p>
+
+    <div class="breakdown">
+      <div class="breakdown-row">
+        <span class="bk-label">End Value (GDV)</span>
+        <span class="bk-val" id="s-bkGdv">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="bk-label">Refinance mortgage (75% LTV)</span>
+        <span class="bk-val" id="s-bkMortgage">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="bk-label">Annual stressed interest</span>
+        <span class="bk-val" id="s-bkAnnual">—</span>
+      </div>
+      <div class="breakdown-row highlight">
+        <span class="bk-label">Monthly stressed interest</span>
+        <span class="bk-val" id="s-bkMonthly">—</span>
+      </div>
+      <div class="breakdown-row highlight">
+        <span class="bk-label">Required minimum rent (×1.5)</span>
+        <span class="bk-val" id="s-bkRequired">—</span>
+      </div>
+      <div class="breakdown-row total">
+        <span class="bk-label">Actual expected rent</span>
+        <span class="bk-val" id="s-bkActual">—</span>
+      </div>
+    </div>
+
+    <div class="strategy-box">
+      <p class="s-label">Exit Strategy</p>
+      <div class="strategy-label-big" id="strategyLabel"></div>
+      <p class="strategy-reason" id="strategyReason"></p>
+    </div>
+
+    <button class="reset-btn" onclick="resetStress()">Clear and start again</button>
+  </div>
+</div>
+
+<footer>For indicative purposes only. Always conduct full due diligence before proceeding.</footer>
 
 <script>
-  const marginInput   = document.getElementById('margin');
-  const marginDisplay = document.getElementById('marginDisplay');
-
-  marginInput.addEventListener('input', () => {
-    marginDisplay.textContent = marginInput.value + '%';
-  });
-
+  /* ── Helpers ── */
   function fmt(n) {
     return '£' + Math.round(n).toLocaleString('en-GB');
   }
 
-  function calculate() {
+  function fmtDec(n) {
+    // Round to nearest pound but show pence if close to a .50
+    const rounded = Math.round(n * 100) / 100;
+    return '£' + rounded.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  }
+
+  /* ── Tab switching ── */
+  function switchTab(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ══════════════════════════════
+     TAB 1 — MAXIMUM OFFER
+  ══════════════════════════════ */
+  const marginInput   = document.getElementById('margin');
+  const marginDisplay = document.getElementById('marginDisplay');
+  marginInput.addEventListener('input', () => { marginDisplay.textContent = marginInput.value + '%'; });
+
+  function calcOffer() {
     const endValue = parseFloat(document.getElementById('endValue').value) || 0;
-    const refurb   = parseFloat(document.getElementById('refurb').value) || 0;
+    const refurb   = parseFloat(document.getElementById('refurb').value)   || 0;
     const margin   = parseFloat(marginInput.value) / 100;
 
-    if (endValue <= 0) {
-      document.getElementById('endValue').focus();
-      return;
-    }
+    if (endValue <= 0) { document.getElementById('endValue').focus(); return; }
 
-    const profitDeduction = endValue * margin;
-    const maxOffer = endValue - profitDeduction - refurb;
+    const profitDeduct = endValue * margin;
+    const maxOffer     = endValue - profitDeduct - refurb;
+    const ratio        = maxOffer / endValue;
 
-    const panel   = document.getElementById('resultPanel');
-    const valEl   = document.getElementById('resultValue');
-    const verdict = document.getElementById('resultVerdict');
+    const panel   = document.getElementById('offerPanel');
+    const valEl   = document.getElementById('offerValue');
+    const verdict = document.getElementById('offerVerdict');
 
-    // Traffic light: ratio of maxOffer to endValue
-    const ratio = maxOffer / endValue;
     panel.className = 'result-panel visible';
 
     if (maxOffer <= 0) {
       panel.classList.add('red');
-      valEl.textContent = 'No Deal';
-      verdict.innerHTML = 'The numbers don\'t stack. <strong>Refurb costs are too high</strong> relative to the end value.';
+      valEl.textContent   = 'No Deal';
+      verdict.innerHTML   = 'The numbers don\'t stack. <strong>Refurb costs are too high</strong> relative to the end value.';
     } else if (ratio >= 0.55) {
       panel.classList.add('green');
-      valEl.textContent = fmt(maxOffer);
-      verdict.innerHTML = '<strong>Strong deal headroom.</strong> Offer at or below this figure to hit your target margin.';
+      valEl.textContent   = fmt(maxOffer);
+      verdict.innerHTML   = '<strong>Strong deal headroom.</strong> Offer at or below this figure to hit your target margin.';
     } else if (ratio >= 0.40) {
       panel.classList.add('amber');
-      valEl.textContent = fmt(maxOffer);
-      verdict.innerHTML = '<strong>Tight but workable.</strong> Tread carefully on refurb costs — little room for overruns.';
+      valEl.textContent   = fmt(maxOffer);
+      verdict.innerHTML   = '<strong>Tight but workable.</strong> Little room for refurb overruns — price carefully.';
     } else {
       panel.classList.add('red');
-      valEl.textContent = fmt(maxOffer);
-      verdict.innerHTML = '<strong>Very tight margin.</strong> Reconsider the deal or renegotiate the asking price.';
+      valEl.textContent   = fmt(maxOffer);
+      verdict.innerHTML   = '<strong>Very tight margin.</strong> Renegotiate the asking price or reconsider this deal.';
     }
 
-    // Breakdown
-    document.getElementById('bkEndValue').textContent = fmt(endValue);
-    document.getElementById('bkProfit').textContent   = '− ' + fmt(profitDeduction);
-    document.getElementById('bkRefurb').textContent   = '− ' + fmt(refurb);
-    document.getElementById('bkResult').textContent   = maxOffer > 0 ? fmt(maxOffer) : 'N/A';
-    document.getElementById('bkPct').textContent      = marginInput.value;
+    document.getElementById('o-endVal').textContent = fmt(endValue);
+    document.getElementById('o-profit').textContent = '− ' + fmt(profitDeduct);
+    document.getElementById('o-refurb').textContent = '− ' + fmt(refurb);
+    document.getElementById('o-result').textContent = maxOffer > 0 ? fmt(maxOffer) : 'N/A';
+    document.getElementById('o-pct').textContent    = marginInput.value;
 
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  function resetForm() {
+  function resetOffer() {
     document.getElementById('endValue').value = '';
     document.getElementById('refurb').value   = '';
     marginInput.value = 25;
     marginDisplay.textContent = '25%';
-
-    const panel = document.getElementById('resultPanel');
-    panel.className = 'result-panel';
+    document.getElementById('offerPanel').className = 'result-panel';
   }
 
-  // Allow Enter key to trigger calculation
+  /* ══════════════════════════════
+     TAB 2 — STRESS TEST
+  ══════════════════════════════ */
+
+  let mortgageManuallySet = false;
+
+  function autoCalcMortgage() {
+    if (mortgageManuallySet) return; // respect manual override
+    const gdv = parseFloat(document.getElementById('s-gdv').value) || 0;
+    const mortgageField = document.getElementById('s-mortgage');
+    if (gdv > 0) {
+      mortgageField.value = Math.round(gdv * 0.75);
+    } else {
+      mortgageField.value = '';
+    }
+  }
+
+  function onMortgageManual() {
+    mortgageManuallySet = true;
+    document.getElementById('autoLabel').textContent = 'manual';
+  }
+
+  function calcStress() {
+    const gdv      = parseFloat(document.getElementById('s-gdv').value)      || 0;
+    const mortgage = parseFloat(document.getElementById('s-mortgage').value)  || 0;
+    const rate     = parseFloat(document.getElementById('s-rate').value)      || 0;
+    const rent     = parseFloat(document.getElementById('s-rent').value)      || 0;
+
+    if (gdv <= 0)      { document.getElementById('s-gdv').focus();      return; }
+    if (mortgage <= 0) { document.getElementById('s-mortgage').focus(); return; }
+    if (rate <= 0)     { document.getElementById('s-rate').focus();     return; }
+    if (rent <= 0)     { document.getElementById('s-rent').focus();     return; }
+
+    // Core maths
+    // Monthly stressed interest = Mortgage × Rate% ÷ 12
+    const annualInterest  = mortgage * (rate / 100);
+    const monthlyInterest = annualInterest / 12;
+    // Required rent = monthly interest × 1.5
+    const requiredRent    = monthlyInterest * 1.5;
+    // Pass if actual rent >= required rent
+    const passes          = rent >= requiredRent;
+    const difference      = rent - requiredRent; // positive = surplus, negative = shortfall
+
+    const panel = document.getElementById('stressPanel');
+    panel.className = 'result-panel visible';
+
+    const verdictEl = document.getElementById('stressVerdict');
+    const detailEl  = document.getElementById('stressDetail');
+
+    if (passes) {
+      panel.classList.add('green');
+      verdictEl.innerHTML = '<span class="verdict-badge badge-pass">PASS</span>';
+      detailEl.innerHTML  = `Rent exceeds the required minimum by <strong>${fmtDec(difference)}/month</strong>. The deal passes the lender stress test.`;
+    } else {
+      panel.classList.add('red');
+      verdictEl.innerHTML = '<span class="verdict-badge badge-fail">FAIL</span>';
+      detailEl.innerHTML  = `Rent is <strong>${fmtDec(Math.abs(difference))}/month short</strong> of the ${fmtDec(requiredRent)} minimum. The deal fails the stress test.`;
+    }
+
+    // Breakdown figures
+    document.getElementById('s-bkGdv').textContent      = fmt(gdv);
+    document.getElementById('s-bkMortgage').textContent = fmt(mortgage);
+    document.getElementById('s-bkAnnual').textContent   = fmtDec(annualInterest) + '/yr';
+    document.getElementById('s-bkMonthly').textContent  = fmtDec(monthlyInterest) + '/mo';
+    document.getElementById('s-bkRequired').textContent = fmtDec(requiredRent)    + '/mo';
+    document.getElementById('s-bkActual').textContent   = fmtDec(rent)            + '/mo';
+
+    // ── Exit strategy ──
+    // PASS → BRR (refinance and hold)
+    // FAIL → Flip or Negotiate Price (can't pass lender stress test to hold)
+    const labelEl  = document.getElementById('strategyLabel');
+    const reasonEl = document.getElementById('strategyReason');
+
+    if (passes) {
+      labelEl.textContent  = 'BRR — Buy, Refurbish, Refinance';
+      labelEl.className    = 'strategy-label-big brr';
+      const coverage = ((rent / requiredRent) * 100).toFixed(0);
+      reasonEl.innerHTML =
+        `The rent covers <strong>${coverage}% of the stress-test threshold</strong>, meaning a lender is likely to approve the refinance at 75% LTV. ` +
+        `After refinancing you can recycle your capital and retain the property as a long-term rental asset. ` +
+        (difference > 300
+          ? `The ${fmtDec(difference)}/month surplus also provides solid cashflow after voids, maintenance and management fees.`
+          : `<strong>Note:</strong> the margin above the threshold is modest — factor in voids, management costs and rate rises carefully.`);
+    } else {
+      labelEl.textContent  = 'Flip or Negotiate Price';
+      labelEl.className    = 'strategy-label-big flip';
+      const shortfall = Math.abs(difference);
+      reasonEl.innerHTML =
+        `The deal fails the lender stress test by <strong>${fmtDec(shortfall)}/month</strong>, so refinancing and holding (BRR) is not viable without lender approval. ` +
+        `<strong>Two options:</strong><br><br>` +
+        `<strong>1. Flip</strong> — Sell after refurbishment and take your profit on completion. ` +
+        `Confirm your Maximum Offer still delivers an adequate sale margin before proceeding.<br><br>` +
+        `<strong>2. Negotiate the price</strong> — Even in strong rental areas a margin buffer is essential. ` +
+        `Push the purchase price down until your maximum offer figure creates enough headroom, or wait for a stronger rental market. ` +
+        `Don't force a BRR on numbers that don't stack.`;
+    }
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function resetStress() {
+    ['s-gdv','s-mortgage','s-rate','s-rent'].forEach(id => document.getElementById(id).value = '');
+    mortgageManuallySet = false;
+    document.getElementById('autoLabel').textContent = 'auto';
+    document.getElementById('stressPanel').className = 'result-panel';
+  }
+
+  /* ── Enter key ── */
   document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') calculate();
+    if (e.key !== 'Enter') return;
+    const activeTab = document.querySelector('.section.active').id;
+    if (activeTab === 'tab-offer')  calcOffer();
+    if (activeTab === 'tab-stress') calcStress();
   });
 </script>
 </body>
