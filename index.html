@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maximum Offer Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --charcoal: #1C1C1E;
+      --charcoal-mid: #2C2C2E;
+      --charcoal-light: #3A3A3C;
+      --cream: #F5F0E8;
+      --cream-dim: #E8E2D8;
+      --gold: #C9A84C;
+      --gold-dim: #a88a3a;
+      --slate: #8E8E93;
+      --green: #34C759;
+      --amber: #FF9F0A;
+      --red: #FF453A;
+      --white: #FFFFFF;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--charcoal);
+      color: var(--cream);
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 1rem 4rem;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      max-width: 580px;
+      padding: 2.5rem 0 0;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2rem, 7vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.05;
+      color: var(--white);
+    }
+
+    .subtitle {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--slate);
+    }
+
+    /* ── Formula strip ── */
+    .formula-strip {
+      margin-top: 1.8rem;
+      background: var(--charcoal-mid);
+      border: 1px solid var(--charcoal-light);
+      border-radius: 8px;
+      padding: 0.75rem 1.2rem;
+      font-size: 0.75rem;
+      color: var(--slate);
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .formula-strip strong {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 580px;
+      background: var(--charcoal-mid);
+      border: 1px solid var(--charcoal-light);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-top: 1.4rem;
+    }
+
+    /* ── Fields ── */
+    .field {
+      margin-bottom: 1.4rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 0.45rem;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap .symbol {
+      position: absolute;
+      left: 0.9rem;
+      font-size: 1rem;
+      color: var(--gold);
+      pointer-events: none;
+      font-weight: 600;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      background: var(--charcoal);
+      border: 1px solid var(--charcoal-light);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      padding: 0.75rem 0.9rem 0.75rem 2.2rem;
+      outline: none;
+      transition: border-color 0.15s;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    input[type="number"]::placeholder { color: #48484A; }
+
+    input[type="number"]:focus {
+      border-color: var(--gold);
+    }
+
+    .field-hint {
+      font-size: 0.68rem;
+      color: #636366;
+      margin-top: 0.3rem;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--charcoal-light);
+      margin: 1.6rem 0;
+    }
+
+    /* ── Profit margin slider ── */
+    .slider-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.45rem;
+    }
+
+    .slider-label-row label { margin-bottom: 0; }
+
+    .slider-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 4px;
+      background: var(--charcoal-light);
+      border-radius: 2px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-top: -7px;
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.2);
+    }
+
+    input[type="range"]:focus { outline: none; }
+
+    /* ── Calculate button ── */
+    .calc-btn {
+      width: 100%;
+      background: var(--gold);
+      color: var(--charcoal);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 8px;
+      padding: 0.9rem;
+      cursor: pointer;
+      margin-top: 0.4rem;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .calc-btn:hover { background: var(--gold-dim); }
+    .calc-btn:active { transform: scale(0.98); }
+
+    /* ── Result panel ── */
+    .result-panel {
+      width: 100%;
+      max-width: 580px;
+      margin-top: 1.2rem;
+      border-radius: 14px;
+      padding: 1.8rem 2rem;
+      border: 2px solid transparent;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s;
+      pointer-events: none;
+    }
+
+    .result-panel.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .result-panel.green  { background: rgba(52,199,89,0.08);  border-color: rgba(52,199,89,0.3);  }
+    .result-panel.amber  { background: rgba(255,159,10,0.08); border-color: rgba(255,159,10,0.3); }
+    .result-panel.red    { background: rgba(255,69,58,0.08);  border-color: rgba(255,69,58,0.3);  }
+
+    .result-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 0.2rem;
+    }
+
+    .result-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.6rem, 10vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.01em;
+    }
+
+    .result-panel.green .result-value { color: var(--green); }
+    .result-panel.amber .result-value { color: var(--amber); }
+    .result-panel.red   .result-value { color: var(--red);   }
+
+    .result-verdict {
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--slate);
+    }
+
+    .result-verdict strong {
+      color: var(--cream);
+    }
+
+    /* ── Breakdown ── */
+    .breakdown {
+      margin-top: 1.4rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+    }
+
+    .breakdown-row .bk-label { color: var(--slate); }
+    .breakdown-row .bk-val   { color: var(--cream); font-weight: 500; }
+    .breakdown-row.total .bk-label { color: var(--cream); font-weight: 600; }
+    .breakdown-row.total .bk-val   { color: var(--gold);  font-weight: 700; font-size: 0.9rem; }
+
+    /* ── Reset ── */
+    .reset-btn {
+      display: block;
+      margin: 1rem auto 0;
+      background: none;
+      border: none;
+      color: var(--slate);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.15s;
+    }
+    .reset-btn:hover { color: var(--cream); }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 3rem;
+      font-size: 0.68rem;
+      color: #48484A;
+      text-align: center;
+    }
+
+    @media (max-width: 420px) {
+      .card { padding: 1.4rem 1rem; }
+      .result-panel { padding: 1.4rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Property Investment</p>
+  <h1>Maximum Offer<br>Calculator</h1>
+  <p class="subtitle">Know your ceiling before you walk through the door.</p>
+
+  <div class="formula-strip">
+    <strong>Maximum Offer</strong> = End Value − (End Value × Profit Margin %) − Refurbishment / GDC
+  </div>
+</header>
+
+<!-- Input card -->
+<div class="card">
+
+  <div class="field">
+    <label for="endValue">End Value (GDV)</label>
+    <div class="input-wrap">
+      <span class="symbol">£</span>
+      <input type="number" id="endValue" placeholder="e.g. 350000" min="0" step="1000" />
+    </div>
+    <p class="field-hint">Estimated resale or refinance value after works</p>
+  </div>
+
+  <div class="field">
+    <label for="refurb">Refurbishment / GDC</label>
+    <div class="input-wrap">
+      <span class="symbol">£</span>
+      <input type="number" id="refurb" placeholder="e.g. 40000" min="0" step="500" />
+    </div>
+    <p class="field-hint">Total cost of works, including contingency</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="field">
+    <div class="slider-label-row">
+      <label for="margin">Profit Margin</label>
+      <span class="slider-value" id="marginDisplay">25%</span>
+    </div>
+    <input type="range" id="margin" min="10" max="40" value="25" step="1" />
+    <p class="field-hint">Default 25% — adjust for your deal criteria</p>
+  </div>
+
+  <button class="calc-btn" onclick="calculate()">Calculate Maximum Offer</button>
+</div>
+
+<!-- Result panel -->
+<div class="result-panel" id="resultPanel">
+  <p class="result-label">Maximum Offer</p>
+  <div class="result-value" id="resultValue">£0</div>
+  <p class="result-verdict" id="resultVerdict"></p>
+
+  <div class="breakdown" id="breakdown">
+    <div class="breakdown-row">
+      <span class="bk-label">End Value (GDV)</span>
+      <span class="bk-val" id="bkEndValue">—</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="bk-label">Less profit margin (<span id="bkPct">25</span>%)</span>
+      <span class="bk-val" id="bkProfit">—</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="bk-label">Less refurbishment / GDC</span>
+      <span class="bk-val" id="bkRefurb">—</span>
+    </div>
+    <div class="breakdown-row total">
+      <span class="bk-label">= Maximum Offer</span>
+      <span class="bk-val" id="bkResult">—</span>
+    </div>
+  </div>
+
+  <button class="reset-btn" onclick="resetForm()">Clear and start again</button>
+</div>
+
+<footer>For indicative purposes only. Always conduct full due diligence.</footer>
+
+<script>
+  const marginInput   = document.getElementById('margin');
+  const marginDisplay = document.getElementById('marginDisplay');
+
+  marginInput.addEventListener('input', () => {
+    marginDisplay.textContent = marginInput.value + '%';
+  });
+
+  function fmt(n) {
+    return '£' + Math.round(n).toLocaleString('en-GB');
+  }
+
+  function calculate() {
+    const endValue = parseFloat(document.getElementById('endValue').value) || 0;
+    const refurb   = parseFloat(document.getElementById('refurb').value) || 0;
+    const margin   = parseFloat(marginInput.value) / 100;
+
+    if (endValue <= 0) {
+      document.getElementById('endValue').focus();
+      return;
+    }
+
+    const profitDeduction = endValue * margin;
+    const maxOffer = endValue - profitDeduction - refurb;
+
+    const panel   = document.getElementById('resultPanel');
+    const valEl   = document.getElementById('resultValue');
+    const verdict = document.getElementById('resultVerdict');
+
+    // Traffic light: ratio of maxOffer to endValue
+    const ratio = maxOffer / endValue;
+    panel.className = 'result-panel visible';
+
+    if (maxOffer <= 0) {
+      panel.classList.add('red');
+      valEl.textContent = 'No Deal';
+      verdict.innerHTML = 'The numbers don\'t stack. <strong>Refurb costs are too high</strong> relative to the end value.';
+    } else if (ratio >= 0.55) {
+      panel.classList.add('green');
+      valEl.textContent = fmt(maxOffer);
+      verdict.innerHTML = '<strong>Strong deal headroom.</strong> Offer at or below this figure to hit your target margin.';
+    } else if (ratio >= 0.40) {
+      panel.classList.add('amber');
+      valEl.textContent = fmt(maxOffer);
+      verdict.innerHTML = '<strong>Tight but workable.</strong> Tread carefully on refurb costs — little room for overruns.';
+    } else {
+      panel.classList.add('red');
+      valEl.textContent = fmt(maxOffer);
+      verdict.innerHTML = '<strong>Very tight margin.</strong> Reconsider the deal or renegotiate the asking price.';
+    }
+
+    // Breakdown
+    document.getElementById('bkEndValue').textContent = fmt(endValue);
+    document.getElementById('bkProfit').textContent   = '− ' + fmt(profitDeduction);
+    document.getElementById('bkRefurb').textContent   = '− ' + fmt(refurb);
+    document.getElementById('bkResult').textContent   = maxOffer > 0 ? fmt(maxOffer) : 'N/A';
+    document.getElementById('bkPct').textContent      = marginInput.value;
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function resetForm() {
+    document.getElementById('endValue').value = '';
+    document.getElementById('refurb').value   = '';
+    marginInput.value = 25;
+    marginDisplay.textContent = '25%';
+
+    const panel = document.getElementById('resultPanel');
+    panel.className = 'result-panel';
+  }
+
+  // Allow Enter key to trigger calculation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') calculate();
+  });
+</script>
+</body>
+</html>
